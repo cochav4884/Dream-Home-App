@@ -9,6 +9,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // Import types and constants from the types.ts file
 import type { Accessory, Category } from "../types";
 import { styles, sizes } from "../types";
+import { useEffect } from "react";
 
 // Accessory interface definition (imported now from types.ts)
 const App: React.FC = () => {
@@ -228,7 +229,5 @@ const App: React.FC = () => {
 };
 
 export default App;
-function useEffect(callback: () => void, dependencies: React.DependencyList) {
-  React.useEffect(callback, dependencies);
-}
+// Removed custom useEffect definition as it conflicts with React's built-in useEffect.
 

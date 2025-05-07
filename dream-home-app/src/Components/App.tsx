@@ -1,48 +1,49 @@
 import React, { useState } from "react";
-import { houseAccessories } from "../Data/houseAccessories"; // assumed predefined
-import { landAccessories } from "../Data/landAccessories"; // assumed predefined
 import Header from "../Components/Header";
 import Sidebar from "../Components/Sidebar";
 import AccessoryList from "../Components/AccessoryList";
 import { Button } from "react-bootstrap";
 import "../styles/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useEffect as reactUseEffect } from "react"; // aliased useEffect
 
-// Accessory interface definition
-interface Accessory {
-  id: number;
-  name: string;
-  style: string;
-  size: string;
-}
+// Import types and constants from the types.ts file
+import type { Accessory, Category } from "../types";
+import { styles, sizes } from "../types";
 
+// Accessory interface definition (imported now from types.ts)
 const App: React.FC = () => {
-  // Set page title on component mount
+  // Set page title and fetch data on mount
   useEffect(() => {
     document.title = "Dream Home Project";
+
+    // Fetch house accessories from API
+    fetch("http://localhost:3001/houseAccessories")
+      .then((res) => res.json())
+      .then((data) => setHouseList(data))
+      .catch((err) => console.error("Failed to load house accessories:", err));
+
+    // Fetch land accessories from API
+    fetch("http://localhost:3001/landAccessories")
+      .then((res) => res.json())
+      .then((data) => setLandList(data))
+      .catch((err) => console.error("Failed to load land accessories:", err));
   }, []);
 
-  // Initialize accessory lists for house and land
-  const [houseList, setHouseList] = useState(houseAccessories);
-  const [landList, setLandList] = useState(landAccessories);
-
-  // Selected item for editing
+  // State hooks
+  const [houseList, setHouseList] = useState<Accessory[]>([]);
+  const [landList, setLandList] = useState<Accessory[]>([]);
   const [selectedItem, setSelectedItem] = useState<Accessory | null>(null);
-  // Controlled form data state
   const [formData, setFormData] = useState({ name: "", style: "", size: "" });
-
-  // Flags for showing form and tracking its context
   const [isFormVisible, setIsFormVisible] = useState(false);
-  const [formType, setFormType] = useState<"house" | "land" | null>(null);
-  const [activeList, setActiveList] = useState<"house" | "land">("house");
+  const [formType, setFormType] = useState<Category | null>(null);
+  const [activeList, setActiveList] = useState<Category>("house");
 
-  // Switch between house and land views
-  const handleSelectCategory = (category: "house" | "land") => {
+  // Handle category selection (house or land)
+  const handleSelectCategory = (category: Category) => {
     setActiveList(category);
   };
 
-  // Trigger add new item flow
+  // Add new item
   const addNewItem = () => {
     const newItem = { id: Date.now(), name: "", style: "", size: "" };
     setSelectedItem(newItem);
@@ -51,7 +52,7 @@ const App: React.FC = () => {
     setIsFormVisible(true);
   };
 
-  // Trigger edit flow by loading item data into the form
+  // Edit existing item
   const editItem = (id: number) => {
     const list = activeList === "house" ? houseList : landList;
     const item = list.find((item) => item.id === id);
@@ -63,103 +64,56 @@ const App: React.FC = () => {
     }
   };
 
-  // Delete item by ID
+  // Delete item
   const deleteItem = (id: number) => {
     if (activeList === "house") {
       setHouseList((prevList) => prevList.filter((item) => item.id !== id));
     } else {
       setLandList((prevList) => prevList.filter((item) => item.id !== id));
     }
+
+    // Optional: DELETE from json-server
+    const endpoint = activeList === "house" ? "houseAccessories" : "landAccessories";
+    fetch(`http://localhost:3001/${endpoint}/${id}`, {
+      method: "DELETE",
+    }).catch((err) => console.error("Failed to delete item:", err));
   };
-
-  // Dropdown options for styles
-  const styles = [
-    "Rustic",
-    "Luxury",
-    "Contemporary",
-    "Industrial",
-    "Traditional",
-    "Abstract",
-    "Bohemian",
-    "Vintage",
-    "Modern",
-    "Decorative",
-    "Functional",
-    "Recreational",
-    "Colorful",
-    "Natural",
-    "Serene",
-    "Playful",
-    "Minimalist",
-    "Victorian",
-    "Eclectic",
-    "Art Deco",
-    "Scandinavian",
-    "Mediterranean",
-    "Farmhouse",
-    "Cottage",
-    "Mid-Century Modern",
-    "Coastal",
-    "Japanese Zen",
-    "Tropical",
-    "Southwestern",
-    "Gothic",
-    "StyleNotSpecified",
-  ];
-
-  // Dropdown options for sizes
-  const sizes: string[] = [
-    "Small",
-    "Medium",
-    "Large",
-    "Extra Large",
-    "Compact",
-    "Oversized",
-    "Standard",
-    "Mini",
-    "Maxi",
-    "Petite",
-    "Tall",
-    "Short",
-    "Wide",
-    "Narrow",
-    "Slim",
-    "Spacious",
-    "Cozy",
-    "Roomy",
-    "Generous",
-    "Ample",
-    "Vast",
-    "Expansive",
-    "Breezy",
-    "Open",
-    "SizeNotSpecified",
-  ];
 
   // Save new or edited accessory
   const saveAccessory = (newItem: Accessory) => {
-    if (formType === "house") {
-      setHouseList((prevList) =>
-        prevList.some((item) => item.id === newItem.id)
-          ? prevList.map((item) => (item.id === newItem.id ? newItem : item))
-          : [...prevList, newItem]
-      );
-    } else if (formType === "land") {
-      setLandList((prevList) =>
-        prevList.some((item) => item.id === newItem.id)
-          ? prevList.map((item) => (item.id === newItem.id ? newItem : item))
-          : [...prevList, newItem]
-      );
-    }
+    const listType = formType === "house" ? "houseAccessories" : "landAccessories";
+    const setList = formType === "house" ? setHouseList : setLandList;
+
+    const existing = (formType === "house" ? houseList : landList).some((item) => item.id === newItem.id);
+    const method = existing ? "PUT" : "POST";
+    const url = existing
+      ? `http://localhost:3001/${listType}/${newItem.id}`
+      : `http://localhost:3001/${listType}`;
+
+    fetch(url, {
+      method: method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newItem),
+    })
+      .then((res) => res.json())
+      .then((savedItem) => {
+        setList((prevList) =>
+          existing
+            ? prevList.map((item) => (item.id === savedItem.id ? savedItem : item))
+            : [...prevList, savedItem]
+        );
+      })
+      .catch((err) => console.error("Failed to save accessory:", err));
+
     setIsFormVisible(false);
   };
 
-  // Cancel form and hide it
+  // Cancel form
   const cancelForm = () => {
     setIsFormVisible(false);
   };
 
-  // Determine which accessory list is currently active
+  // Determine which accessory list to display based on active category
   const accessories = activeList === "house" ? houseList : landList;
 
   // Handle form submission
@@ -183,19 +137,15 @@ const App: React.FC = () => {
         <Sidebar onSelectCategory={handleSelectCategory} />
         <main className="content">
           <h2>
-            {activeList === "house"
-              ? "🏠 House Accessories"
-              : "🌿 Land Accessories"}
+            {activeList === "house" ? "🏠 House Accessories" : "🌿 Land Accessories"}
           </h2>
 
-          {/* Add New Item Button */}
           <div className="button-container">
             <Button variant="primary" onClick={addNewItem}>
               Add New {activeList === "house" ? "House" : "Land"} Item
             </Button>
           </div>
 
-          {/* Accessory List Component */}
           <AccessoryList
             accessories={accessories}
             deleteItem={deleteItem}
@@ -204,13 +154,11 @@ const App: React.FC = () => {
         </main>
       </div>
 
-      {/* Conditional Form Overlay */}
       {isFormVisible && (
         <div className="form-overlay">
           <form onSubmit={handleFormSubmit}>
             <h3>{selectedItem ? "Edit Item" : "Create New Item"}</h3>
 
-            {/* Name Field */}
             <div>
               <label htmlFor="name">Name</label>
               <input
@@ -226,7 +174,6 @@ const App: React.FC = () => {
               />
             </div>
 
-            {/* Style Dropdown */}
             <div>
               <label htmlFor="style">Style</label>
               <select
@@ -247,7 +194,6 @@ const App: React.FC = () => {
               </select>
             </div>
 
-            {/* Size Dropdown */}
             <div>
               <label htmlFor="size">Size</label>
               <select
@@ -268,7 +214,6 @@ const App: React.FC = () => {
               </select>
             </div>
 
-            {/* Form Buttons */}
             <div className="form-buttons">
               <button type="button" onClick={cancelForm}>
                 Cancel
@@ -283,11 +228,7 @@ const App: React.FC = () => {
 };
 
 export default App;
-
-// Custom hook re-mapping useEffect with aliased import
 function useEffect(callback: () => void, dependencies: React.DependencyList) {
-  reactUseEffect(callback, dependencies);
+  React.useEffect(callback, dependencies);
 }
-// This custom hook allows us to use the aliased useEffect without conflicts
-// while maintaining the original functionality of React's useEffect.
-// The custom useEffect function is defined to avoid conflicts with the aliased import.
+

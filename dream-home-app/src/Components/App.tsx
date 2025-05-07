@@ -6,7 +6,6 @@ import AccessoryForm from "../Components/AccessoryForm";
 import { Button } from "react-bootstrap";
 import "../Styles/App.css";
 import "../Styles/Form.css";
-import "../Components/Sidebar/Sidebar.module.css"
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import type { Accessory, Category } from "../types";
@@ -102,32 +101,36 @@ const App: React.FC = () => {
 
   return (
     <div className="app-container">
-      <Header />
-      <div className="main-layout">
-        <Sidebar onSelectCategory={handleSelectCategory} />
-        <main className="content">
-          <h2>{activeList === "house" ? "🏠 House Accessories" : "🌿 Land Accessories"}</h2>
-
-          <div className="button-container">
-            <Button variant="primary" onClick={addNewItem}>
-              Add New {activeList === "house" ? "House" : "Land"} Item
-            </Button>
-          </div>
-
-          <AccessoryList accessories={accessories} deleteItem={deleteItem} editItem={editItem} />
-        </main>
-      </div>
-
-      {isFormVisible && selectedItem && (
-        <div className="form-overlay">
-          <AccessoryForm
-            accessory={selectedItem}
-            onSave={saveAccessory}
-            onCancel={cancelForm}
-          />
+    <Header />
+    <div className="main-layout">
+      <Sidebar onSelectCategory={handleSelectCategory} />
+      <main className="content">
+        <h2>{activeList === "house" ? "🏠 House Accessories" : "🌿 Land Accessories"}</h2>
+  
+        <div className="button-container">
+          <Button variant="primary" onClick={addNewItem}>
+            Add New {activeList === "house" ? "House" : "Land"} Item
+          </Button>
         </div>
-      )}
+  
+        <AccessoryList
+          accessories={accessories}
+          deleteItem={deleteItem}
+          editItem={editItem}
+        />
+      </main>
     </div>
+    {isFormVisible && selectedItem && (
+      <div className="form-overlay">
+        <AccessoryForm
+          accessory={selectedItem}
+          onSave={saveAccessory}
+          onCancel={cancelForm}
+        />
+      </div>
+    )}
+  </div>
+  
   );
 };
 

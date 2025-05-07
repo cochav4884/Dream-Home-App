@@ -1,0 +1,54 @@
+/* src/Styles/Form.css */
+
+.form-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-container h2 {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-container .form-group {
+    margin-bottom: 1.25rem;
+  }
+  
+  .form-container .form-control {
+    font-size: 1rem;
+    padding: 0.75rem;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+  }
+  
+  .form-container .form-control:focus {
+    border-color: #61dafb;
+    box-shadow: 0 0 5px rgba(97, 218, 251, 0.5);
+  }
+  
+  .form-container .btn-primary {
+    background-color: #007bff;
+    border: none;
+  }
+  
+  .form-container .btn-primary:hover {
+    background-color: #0056b3;
+  }
+  
+  .form-container .btn-secondary {
+    background-color: #6c757d;
+    border: none;
+  }
+  
+  .form-container .btn-secondary:hover {
+    background-color: #495057;
+  }
+  
+  .form-container button + button {
+    margin-left: 10px;
+  }
+  

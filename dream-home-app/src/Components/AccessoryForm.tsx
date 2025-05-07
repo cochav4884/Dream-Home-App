@@ -1,28 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Form } from 'react-bootstrap'; // Import necessary components
+import { Button, Form } from 'react-bootstrap';
+import '../Styles/Form.css'; // Importing CSS from the Styles folder
+import 'bootstrap/dist/css/bootstrap.min.css'; // ✅ Add this
 
-// Define the structure for an Accessory item
-interface Accessory {
-  id: number;
-  name: string;
-  style: string;
-  size: string;
-}
+// Importing types and constants
+import { styles, sizes } from '../types'; // Adjust the path based on your project structure
+import type { Accessory } from '../types'; // Type-only import for Accessory
 
-// Define props expected by the AccessoryForm component
 interface AccessoryFormProps {
-  accessory: Accessory | null; // If null, it's for creating a new item
-  onSave: (accessory: Accessory) => void; // Callback for saving the accessory
-  onCancel: () => void; // Callback for canceling the form
+  accessory: Accessory | null;
+  onSave: (accessory: Accessory) => void;
+  onCancel: () => void;
 }
 
-// Functional component to handle creation/editing of an accessory
 const AccessoryForm: React.FC<AccessoryFormProps> = ({ accessory, onSave, onCancel }) => {
-  const [name, setName] = useState(''); // State for name input
-  const [style, setStyle] = useState(''); // State for style input
-  const [size, setSize] = useState(''); // State for size input
+  const [name, setName] = useState('');
+  const [style, setStyle] = useState('');
+  const [size, setSize] = useState('');
 
-  // If an accessory is passed (editing), populate the form fields
+  // Pre-populate the form fields when editing an existing accessory
   useEffect(() => {
     if (accessory) {
       setName(accessory.name);
@@ -33,54 +29,89 @@ const AccessoryForm: React.FC<AccessoryFormProps> = ({ accessory, onSave, onCanc
 
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent default form behavior
-    if (name && style && size) {
-      const newItem = { id: Date.now(), name, style, size }; // Creating a new item with a unique id
-      onSave(newItem); // Save the item using the provided callback
+    e.preventDefault();
+    if (name.trim() && style.trim() && size.trim()) {
+      const newItem = { id: Date.now(), name, style, size };  // Use Date.now() to generate a number ID
+      onSave(newItem);  // Call the onSave callback to save the item
+      setName('');  // Clear form fields
+      setStyle('');
+      setSize('');
+    } else {
+      alert('Please fill out all fields.');
     }
+  };
+
+  // Handle cancel button action
+  const handleCancel = () => {
+    setName('');  // Reset form fields
+    setStyle('');
+    setSize('');
+    onCancel();  // Call the onCancel callback to cancel the form
   };
 
   return (
     <div className="form-container">
       <h2>{accessory ? 'Edit Accessory' : 'Add New Accessory'}</h2>
       <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="name">
+        <Form.Group controlId="name" className="form-group">
           <Form.Label>Accessory Name</Form.Label>
           <Form.Control
+            className="form-control"
             type="text"
             value={name}
-            onChange={(e) => setName(e.target.value)} // Update name state
+            onChange={(e) => setName(e.target.value)}  // Update name state
             required
           />
         </Form.Group>
 
-        <Form.Group controlId="style">
+        <Form.Group controlId="style" className="form-group">
           <Form.Label>Style</Form.Label>
           <Form.Control
-            type="text"
+            as="select"  // Change to dropdown
+            className="form-control"
             value={style}
-            onChange={(e) => setStyle(e.target.value)} // Update style state
+            onChange={(e) => setStyle(e.target.value)}  // Update style state
             required
-          />
+          >
+            <option value="">-- Select a Style --</option>
+            {styles.map((styleOption) => (
+              <option key={styleOption} value={styleOption}>
+                {styleOption}
+              </option>
+            ))}
+          </Form.Control>
         </Form.Group>
 
-        <Form.Group controlId="size">
+        <Form.Group controlId="size" className="form-group">
           <Form.Label>Size</Form.Label>
           <Form.Control
-            type="text"
+            as="select"  // Change to dropdown
+            className="form-control"
             value={size}
-            onChange={(e) => setSize(e.target.value)} // Update size state
+            onChange={(e) => setSize(e.target.value)}  // Update size state
             required
-          />
+          >
+            <option value="">-- Select a Size --</option>
+            {sizes.map((sizeOption) => (
+              <option key={sizeOption} value={sizeOption}>
+                {sizeOption}
+              </option>
+            ))}
+          </Form.Control>
         </Form.Group>
 
-        {/* Submit button with dynamic text based on mode */}
-        <Button variant="primary" type="submit">
+        {/* Submit button with dynamic text */}
+        <Button variant="primary" type="submit" className="btn-primary">
           {accessory ? 'Update' : 'Add'} Accessory
         </Button>
 
-        {/* Cancel button triggers onCancel callback */}
-        <Button variant="secondary" onClick={onCancel} style={{ marginLeft: '10px' }}>
+        {/* Cancel button */}
+        <Button
+          variant="secondary"
+          onClick={handleCancel}
+          className="btn-secondary"
+          style={{ marginLeft: '10px' }}
+        >
           Cancel
         </Button>
       </Form>
@@ -89,5 +120,3 @@ const AccessoryForm: React.FC<AccessoryFormProps> = ({ accessory, onSave, onCanc
 };
 
 export default AccessoryForm;
-// This component can be used in the main App component to handle both creating and editing accessories.
-// It provides a form with fields for name, style, and size, and uses Bootstrap for styling.

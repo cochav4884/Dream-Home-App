@@ -11,10 +11,12 @@
   },
   "dependencies": {
     "bootstrap": "^5.3.6",
+    "dream-home-app": "file:",
     "react": "^19.1.0",
     "react-bootstrap": "^2.10.9",
     "react-dom": "^19.1.0",
-    "react-router-dom": "^7.5.3"
+    "react-router-dom": "^7.5.3",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",

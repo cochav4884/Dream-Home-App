@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/Sidebar.css'; // Import styles for the sidebar
+import styles from './Sidebar.module.css'; // Import styles for the sidebar
 
 // Define the props expected by the Sidebar component
 interface SidebarProps {
@@ -9,7 +9,7 @@ interface SidebarProps {
 // Sidebar component to select between house and land accessories
 const Sidebar: React.FC<SidebarProps> = ({ onSelectCategory }) => {
   return (
-    <div className="sidebar open">
+    <div className={styles.sidebar}>
       <nav>
         <ul>
           {/* Button to select House Accessories */}

@@ -3,6 +3,7 @@ import App from './Components/App'; // Import the main App component from the co
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap's pre-built CSS for quick styling and components
 import './index.css'; // Import your custom styles for the application
 import './Styles/Form.css'
+import './Components/Sidebar/Sidebar.module.css'
 
 import { createRoot } from 'react-dom/client'; // Import createRoot from ReactDOM to render the app in a modern way
 

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Header from "../Components/Header";
-import Sidebar from "../Components/Sidebar";
+import Sidebar from "./Sidebar/Sidebar";
 import AccessoryList from "../Components/AccessoryList";
 import AccessoryForm from "../Components/AccessoryForm";
 import { Button } from "react-bootstrap";
-import "../styles/App.css";
-import "../styles/Form.css";
+import "../Styles/App.css";
+import "../Styles/Form.css";
+import "../Components/Sidebar/Sidebar.module.css"
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import type { Accessory, Category } from "../types";
@@ -19,7 +20,7 @@ const App: React.FC = () => {
   const [activeList, setActiveList] = useState<Category>("house");
 
   useEffect(() => {
-    document.title = "Dream Home Project";
+    document.title = "Dream Home App";
 
     fetch("http://localhost:3001/houseAccessories")
       .then((res) => res.json())

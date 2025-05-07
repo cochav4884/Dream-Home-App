@@ -229,6 +229,12 @@
       "name": "Water Feature",
       "style": "Serene",
       "size": "Large"
+    },
+    {
+      "id": 1746613836033,
+      "name": "Fruit Tree",
+      "style": "StyleNotSpecified",
+      "size": "SizeNotSpecified"
     }
   ]
 }

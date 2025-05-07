@@ -1,19 +1,36 @@
-/* src/Styles/Form.css */
-
-.form-container {
-    max-width: 600px;
-    margin: 2rem auto;
-    padding: 2rem;
-    border-radius: 8px;
-    background-color: #f8f9fa;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+/* Centered form overlay */
+.form-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
   }
   
+  /* Form container styling */
+  .form-container {
+    width: 100%;
+    max-width: 600px;
+    background-color: #f8f9fa;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+  }
+  
+  /* Heading */
   .form-container h2 {
     font-size: 1.75rem;
     margin-bottom: 1.5rem;
+    text-align: center;
   }
   
+  /* Form fields */
   .form-container .form-group {
     margin-bottom: 1.25rem;
   }
@@ -30,6 +47,7 @@
     box-shadow: 0 0 5px rgba(97, 218, 251, 0.5);
   }
   
+  /* Buttons */
   .form-container .btn-primary {
     background-color: #007bff;
     border: none;
@@ -48,6 +66,7 @@
     background-color: #495057;
   }
   
+  /* Spacing between buttons */
   .form-container button + button {
     margin-left: 10px;
   }

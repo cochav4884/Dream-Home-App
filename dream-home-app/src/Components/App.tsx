@@ -2,14 +2,22 @@ import React, { useState, useEffect } from "react";
 import Header from "../Components/Header";
 import Sidebar from "../Components/Sidebar";
 import AccessoryList from "../Components/AccessoryList";
-import AccessoryForm from "../Components/AccessoryForm"; // ✅ Importing styled form
+import AccessoryForm from "../Components/AccessoryForm";
 import { Button } from "react-bootstrap";
 import "../styles/App.css";
+import "../styles/Form.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import type { Accessory, Category } from "../types";
 
 const App: React.FC = () => {
+  const [houseList, setHouseList] = useState<Accessory[]>([]);
+  const [landList, setLandList] = useState<Accessory[]>([]);
+  const [selectedItem, setSelectedItem] = useState<Accessory | null>(null);
+  const [isFormVisible, setIsFormVisible] = useState(false);
+  const [formType, setFormType] = useState<Category | null>(null);
+  const [activeList, setActiveList] = useState<Category>("house");
+
   useEffect(() => {
     document.title = "Dream Home Project";
 
@@ -24,27 +32,20 @@ const App: React.FC = () => {
       .catch((err) => console.error("Failed to load land accessories:", err));
   }, []);
 
-  const [houseList, setHouseList] = useState<Accessory[]>([]);
-  const [landList, setLandList] = useState<Accessory[]>([]);
-  const [selectedItem, setSelectedItem] = useState<Accessory | null>(null);
-  const [isFormVisible, setIsFormVisible] = useState(false);
-  const [formType, setFormType] = useState<Category | null>(null);
-  const [activeList, setActiveList] = useState<Category>("house");
-
   const handleSelectCategory = (category: Category) => {
     setActiveList(category);
   };
 
   const addNewItem = () => {
-    const newItem: Accessory = { id: Date.now(), name: "", style: "", size: "" };
+    const newItem = { id: Date.now(), name: "", style: "", size: "" };
     setSelectedItem(newItem);
     setFormType(activeList);
     setIsFormVisible(true);
   };
 
-  const editItem = (id: string | number) => {
+  const editItem = (id: number) => {
     const list = activeList === "house" ? houseList : landList;
-    const item = list.find((item) => item.id === (id));
+    const item = list.find((item) => item.id === id);
     if (item) {
       setSelectedItem(item);
       setFormType(activeList);
@@ -52,14 +53,12 @@ const App: React.FC = () => {
     }
   };
 
-  const deleteItem = (id: string | number) => {
-    if (activeList === "house") {
-      setHouseList((prevList) => prevList.filter((item) => item.id !== id));
-    } else {
-      setLandList((prevList) => prevList.filter((item) => item.id !== id));
-    }
-
+  const deleteItem = (id: number) => {
+    const setList = activeList === "house" ? setHouseList : setLandList;
     const endpoint = activeList === "house" ? "houseAccessories" : "landAccessories";
+
+    setList((prevList) => prevList.filter((item) => item.id !== id));
+
     fetch(`http://localhost:3001/${endpoint}/${id}`, {
       method: "DELETE",
     }).catch((err) => console.error("Failed to delete item:", err));
@@ -68,9 +67,8 @@ const App: React.FC = () => {
   const saveAccessory = (newItem: Accessory) => {
     const listType = formType === "house" ? "houseAccessories" : "landAccessories";
     const setList = formType === "house" ? setHouseList : setLandList;
-    const currentList = formType === "house" ? houseList : landList;
 
-    const existing = currentList.some((item) => item.id === newItem.id);
+    const existing = (formType === "house" ? houseList : landList).some((item) => item.id === newItem.id);
     const method = existing ? "PUT" : "POST";
     const url = existing
       ? `http://localhost:3001/${listType}/${newItem.id}`
@@ -88,13 +86,15 @@ const App: React.FC = () => {
             ? prevList.map((item) => (item.id === savedItem.id ? savedItem : item))
             : [...prevList, savedItem]
         );
-        setIsFormVisible(false);
       })
       .catch((err) => console.error("Failed to save accessory:", err));
+
+    setIsFormVisible(false);
   };
 
   const cancelForm = () => {
     setIsFormVisible(false);
+    setSelectedItem(null);
   };
 
   const accessories = activeList === "house" ? houseList : landList;
@@ -105,9 +105,7 @@ const App: React.FC = () => {
       <div className="main-layout">
         <Sidebar onSelectCategory={handleSelectCategory} />
         <main className="content">
-          <h2>
-            {activeList === "house" ? "🏠 House Accessories" : "🌿 Land Accessories"}
-          </h2>
+          <h2>{activeList === "house" ? "🏠 House Accessories" : "🌿 Land Accessories"}</h2>
 
           <div className="button-container">
             <Button variant="primary" onClick={addNewItem}>
@@ -115,16 +113,11 @@ const App: React.FC = () => {
             </Button>
           </div>
 
-          <AccessoryList
-            accessories={accessories}
-            deleteItem={deleteItem}
-            editItem={editItem}
-          />
+          <AccessoryList accessories={accessories} deleteItem={deleteItem} editItem={editItem} />
         </main>
       </div>
 
-      {/* ✅ Styled AccessoryForm */}
-      {isFormVisible && (
+      {isFormVisible && selectedItem && (
         <div className="form-overlay">
           <AccessoryForm
             accessory={selectedItem}

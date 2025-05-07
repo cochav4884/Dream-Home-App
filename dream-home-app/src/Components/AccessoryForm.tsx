@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import '../Styles/Form.css'; // Importing CSS from the Styles folder
-import 'bootstrap/dist/css/bootstrap.min.css'; // ✅ Add this
-
-// Importing types and constants
-import { styles, sizes } from '../types'; // Adjust the path based on your project structure
-import type { Accessory } from '../types'; // Type-only import for Accessory
+import '../Styles/Form.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { styles, sizes } from '../types'; 
+import type { Accessory } from '../types';
 
 interface AccessoryFormProps {
-  accessory: Accessory | null;
+  accessory: Accessory;
   onSave: (accessory: Accessory) => void;
   onCancel: () => void;
 }
@@ -18,7 +16,6 @@ const AccessoryForm: React.FC<AccessoryFormProps> = ({ accessory, onSave, onCanc
   const [style, setStyle] = useState('');
   const [size, setSize] = useState('');
 
-  // Pre-populate the form fields when editing an existing accessory
   useEffect(() => {
     if (accessory) {
       setName(accessory.name);
@@ -27,26 +24,26 @@ const AccessoryForm: React.FC<AccessoryFormProps> = ({ accessory, onSave, onCanc
     }
   }, [accessory]);
 
-  // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+  
     if (name.trim() && style.trim() && size.trim()) {
-      const newItem = { id: Date.now(), name, style, size };  // Use Date.now() to generate a number ID
-      onSave(newItem);  // Call the onSave callback to save the item
-      setName('');  // Clear form fields
-      setStyle('');
-      setSize('');
+      onSave({
+        id: accessory.id,
+        name,
+        style,
+        size
+      });
     } else {
-      alert('Please fill out all fields.');
+      alert("Please fill out all fields.");
     }
   };
-
-  // Handle cancel button action
+  
   const handleCancel = () => {
-    setName('');  // Reset form fields
+    setName('');
     setStyle('');
     setSize('');
-    onCancel();  // Call the onCancel callback to cancel the form
+    onCancel();
   };
 
   return (
@@ -56,10 +53,9 @@ const AccessoryForm: React.FC<AccessoryFormProps> = ({ accessory, onSave, onCanc
         <Form.Group controlId="name" className="form-group">
           <Form.Label>Accessory Name</Form.Label>
           <Form.Control
-            className="form-control"
             type="text"
             value={name}
-            onChange={(e) => setName(e.target.value)}  // Update name state
+            onChange={(e) => setName(e.target.value)}
             required
           />
         </Form.Group>
@@ -67,10 +63,9 @@ const AccessoryForm: React.FC<AccessoryFormProps> = ({ accessory, onSave, onCanc
         <Form.Group controlId="style" className="form-group">
           <Form.Label>Style</Form.Label>
           <Form.Control
-            as="select"  // Change to dropdown
-            className="form-control"
+            as="select"
             value={style}
-            onChange={(e) => setStyle(e.target.value)}  // Update style state
+            onChange={(e) => setStyle(e.target.value)}
             required
           >
             <option value="">-- Select a Style --</option>
@@ -85,10 +80,9 @@ const AccessoryForm: React.FC<AccessoryFormProps> = ({ accessory, onSave, onCanc
         <Form.Group controlId="size" className="form-group">
           <Form.Label>Size</Form.Label>
           <Form.Control
-            as="select"  // Change to dropdown
-            className="form-control"
+            as="select"
             value={size}
-            onChange={(e) => setSize(e.target.value)}  // Update size state
+            onChange={(e) => setSize(e.target.value)}
             required
           >
             <option value="">-- Select a Size --</option>
@@ -100,18 +94,11 @@ const AccessoryForm: React.FC<AccessoryFormProps> = ({ accessory, onSave, onCanc
           </Form.Control>
         </Form.Group>
 
-        {/* Submit button with dynamic text */}
-        <Button variant="primary" type="submit" className="btn-primary">
+        <Button variant="primary" type="submit">
           {accessory ? 'Update' : 'Add'} Accessory
         </Button>
 
-        {/* Cancel button */}
-        <Button
-          variant="secondary"
-          onClick={handleCancel}
-          className="btn-secondary"
-          style={{ marginLeft: '10px' }}
-        >
+        <Button variant="secondary" onClick={handleCancel} style={{ marginLeft: '10px' }}>
           Cancel
         </Button>
       </Form>

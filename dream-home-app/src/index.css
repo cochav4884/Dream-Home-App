@@ -1,68 +1,38 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
+/* General body styles */
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  font-family: Arial, sans-serif; /* Setting a clean and modern font for the body text */
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* Container for the entire application, ensures it stretches to full height */
+.app-container {
+  display: flex; /* Use flexbox to create a flexible layout */
+  flex-direction: column; /* Stack elements vertically */
+  min-height: 100vh; /* Ensures the container takes up at least the full viewport height */
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+/* Layout of the main content area */
+.main-layout {
+  display: flex; /* Use flexbox to lay out the content horizontally */
+  flex-grow: 1; /* Allow the main content to expand and fill available space */
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+/* Content area styling */
+.content {
+  padding: 20px; /* Add space inside the content area */
+  flex-grow: 1; /* Make the content area flexible so it takes up the remaining space */
+}
+
+/* Header and Footer styling */
+.header, .footer {
+  text-align: center; /* Center the text */
+  background-color: #4a90e2; /* Apply a blue background color */
+  color: white; /* Set the text color to white */
+  padding: 1rem; /* Add padding inside the header and footer */
+}
+
+/* Sidebar styling */
+.sidebar {
+  background-color: #f4f4f4; /* Light gray background for the sidebar */
+  padding: 1rem; /* Padding inside the sidebar */
+  width: 200px; /* Fixed width for the sidebar */
 }

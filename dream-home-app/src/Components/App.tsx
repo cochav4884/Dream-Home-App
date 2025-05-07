@@ -7,8 +7,13 @@ import { Button } from "react-bootstrap";
 import "../Styles/App.css";
 import "../Styles/Form.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-
+import bg from "../assets/houseBluePrint 2.jpg";  // Import the background image
 import type { Accessory, Category } from "../types";
+
+// Extending CSSProperties to allow custom properties like "--bg-image"
+interface CSSPropertiesWithCustomVars extends React.CSSProperties {
+  '--bg-image'?: string;
+}
 
 const App: React.FC = () => {
   const [houseList, setHouseList] = useState<Accessory[]>([]);
@@ -55,7 +60,8 @@ const App: React.FC = () => {
 
   const deleteItem = (id: number) => {
     const setList = activeList === "house" ? setHouseList : setLandList;
-    const endpoint = activeList === "house" ? "houseAccessories" : "landAccessories";
+    const endpoint =
+      activeList === "house" ? "houseAccessories" : "landAccessories";
 
     setList((prevList) => prevList.filter((item) => item.id !== id));
 
@@ -65,10 +71,13 @@ const App: React.FC = () => {
   };
 
   const saveAccessory = (newItem: Accessory) => {
-    const listType = formType === "house" ? "houseAccessories" : "landAccessories";
+    const listType =
+      formType === "house" ? "houseAccessories" : "landAccessories";
     const setList = formType === "house" ? setHouseList : setLandList;
 
-    const existing = (formType === "house" ? houseList : landList).some((item) => item.id === newItem.id);
+    const existing = (formType === "house" ? houseList : landList).some(
+      (item) => item.id === newItem.id
+    );
     const method = existing ? "PUT" : "POST";
     const url = existing
       ? `http://localhost:3001/${listType}/${newItem.id}`
@@ -83,7 +92,9 @@ const App: React.FC = () => {
       .then((savedItem) => {
         setList((prevList) =>
           existing
-            ? prevList.map((item) => (item.id === savedItem.id ? savedItem : item))
+            ? prevList.map((item) =>
+                item.id === savedItem.id ? savedItem : item
+              )
             : [...prevList, savedItem]
         );
       })
@@ -100,37 +111,43 @@ const App: React.FC = () => {
   const accessories = activeList === "house" ? houseList : landList;
 
   return (
-    <div className="app-container">
-    <Header />
-    <div className="main-layout">
-      <Sidebar onSelectCategory={handleSelectCategory} />
-      <main className="content">
-        <h2>{activeList === "house" ? "🏠 House Accessories" : "🌿 Land Accessories"}</h2>
-  
-        <div className="button-container">
-          <Button variant="primary" onClick={addNewItem}>
-            Add New {activeList === "house" ? "House" : "Land"} Item
-          </Button>
-        </div>
-  
-        <AccessoryList
-          accessories={accessories}
-          deleteItem={deleteItem}
-          editItem={editItem}
-        />
-      </main>
-    </div>
-    {isFormVisible && selectedItem && (
-      <div className="form-overlay">
-        <AccessoryForm
-          accessory={selectedItem}
-          onSave={saveAccessory}
-          onCancel={cancelForm}
-        />
+    <div
+      className="app-container with-bg"
+      style={{ '--bg-image': `url(${bg})` } as CSSPropertiesWithCustomVars} // Type assertion here
+    >
+      <Header />
+      <div className="main-layout">
+        <Sidebar onSelectCategory={handleSelectCategory} />
+        <main className="content">
+          <h2>
+            {activeList === "house"
+              ? "🏠 House Accessories"
+              : "🌿 Land Accessories"}
+          </h2>
+
+          <div className="button-container">
+            <Button variant="primary" onClick={addNewItem}>
+              Add New {activeList === "house" ? "House" : "Land"} Item
+            </Button>
+          </div>
+
+          <AccessoryList
+            accessories={accessories}
+            deleteItem={deleteItem}
+            editItem={editItem}
+          />
+        </main>
       </div>
-    )}
-  </div>
-  
+      {isFormVisible && selectedItem && (
+        <div className="form-overlay">
+          <AccessoryForm
+            accessory={selectedItem}
+            onSave={saveAccessory}
+            onCancel={cancelForm}
+          />
+        </div>
+      )}
+    </div>
   );
 };
 

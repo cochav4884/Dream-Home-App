@@ -2,10 +2,15 @@
 
 /* Allow app to use full height */
 .app-container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  overflow: hidden; /* prevents scrolling on the whole page */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+
+/* If using CSS variables */
+.app-container.with-bg {
+  background-image: var(--bg-image);  /* Here we use the CSS variable */
 }
 
 .main-layout {

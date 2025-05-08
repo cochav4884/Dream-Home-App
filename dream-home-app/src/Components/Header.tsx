@@ -4,9 +4,9 @@ import React from 'react';
 const Header: React.FC = () => {
   return (
     // Main header section
-    <header className="header">
+    <header className="header bg-info p-3">
       {/* Title of the app */}
-      <h1>🌟 Dream Home Builder</h1>
+      <h1 className='bg-info text-dark'>🌟 Dream Home Builder App</h1>
     </header>
   );
 };

@@ -56,6 +56,7 @@ const AccessoryForm: React.FC<AccessoryFormProps> = ({ accessory, onSave, onCanc
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            placeholder='--Type Here--'
             required
           />
         </Form.Group>
@@ -94,8 +95,8 @@ const AccessoryForm: React.FC<AccessoryFormProps> = ({ accessory, onSave, onCanc
           </Form.Control>
         </Form.Group>
 
-        <Button variant="primary" type="submit">
-          {accessory ? 'Update' : 'Add'} Accessory
+        <Button variant="info" type="submit">
+          {accessory ? 'Save' : 'Add'}
         </Button>
 
         <Button variant="secondary" onClick={handleCancel} style={{ marginLeft: '10px' }}>

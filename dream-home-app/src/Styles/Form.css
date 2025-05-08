@@ -16,12 +16,16 @@
   .form-container {
     width: 100%;
     max-width: 600px;
-    background-color: #f8f9fa;
+    min-width: 320px; /* ✅ Prevent shrinking too small */
+    background-color: rgb(73, 80, 87, 0.85);
     padding: 2rem;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 12px  rgba(0, 0, 0);
     z-index: 1001;
+    box-sizing: border-box; /* ✅ Includes padding in width calculation */
+    color: white;
   }
+  
   
   /* Heading */
   .form-container h2 {
@@ -40,6 +44,7 @@
     padding: 0.75rem;
     border-radius: 5px;
     border: 1px solid #ced4da;
+    box-shadow: 0px 4px 12px  rgba(0, 0, 0);
   }
   
   .form-container .form-control:focus {
@@ -48,18 +53,20 @@
   }
   
   /* Buttons */
-  .form-container .btn-primary {
-    background-color: #007bff;
+  .form-container .btn-info {
+    /* background-color: #007bff; */
     border: none;
+    box-shadow: 0 3px 5px rgba(0, 0, 0);
   }
   
-  .form-container .btn-primary:hover {
-    background-color: #0056b3;
+  .form-container .btn-info:hover {
+    background-color: #0e8797;
   }
   
   .form-container .btn-secondary {
     background-color: #6c757d;
     border: none;
+    box-shadow: 0 3px 5px rgba(0, 0, 0);
   }
   
   .form-container .btn-secondary:hover {

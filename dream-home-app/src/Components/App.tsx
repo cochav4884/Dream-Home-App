@@ -126,7 +126,7 @@ const App: React.FC = () => {
           </h2>
 
           <div className="button-container">
-            <Button variant="primary" onClick={addNewItem}>
+            <Button variant="info" onClick={addNewItem}>
               Add New {activeList === "house" ? "House" : "Land"} Item
             </Button>
           </div>

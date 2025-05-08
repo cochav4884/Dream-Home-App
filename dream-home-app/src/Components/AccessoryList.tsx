@@ -27,7 +27,7 @@ const AccessoryList: React.FC<AccessoryListProps> = ({ accessories, deleteItem, 
           
           {/* Edit Button (blue) */}
           <Button 
-            variant="primary" 
+            variant="info" 
             onClick={() => editItem(accessory.id)} 
             style={{ marginLeft: '10px' }}
           >

@@ -1,12 +1,6 @@
 {
   "houseAccessories": [
     {
-      "id": "1",
-      "name": "Open Kitchen",
-      "style": "Modern",
-      "size": "Large"
-    },
-    {
       "id": "2",
       "name": "Library",
       "style": "Rustic",
@@ -231,7 +225,7 @@
       "size": "Large"
     },
     {
-      "id": 1746613836033,
+      "id": "1746613836033",
       "name": "Fruit Tree",
       "style": "StyleNotSpecified",
       "size": "SizeNotSpecified"

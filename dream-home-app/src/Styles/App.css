@@ -18,14 +18,33 @@
   flex: 1;
   height: 100%;
   overflow: hidden; /* restrict scroll unless needed in children */
+  opacity: 0.8;
+}
+
+.header {
+  background-color: #61dafb; /* Bootstrap's 'info' background */
+  padding: 1rem;
+}
+
+.header h1 {
+  background-color: #61dafb; /* Or slightly darker for contrast */
+  margin: 0;
 }
 
 .content {
+  background-color: #0e8797;
   margin-left: 250px;
   padding: 1rem;
   flex-grow: 1;
   overflow-y: auto;  /* ✅ allows scroll inside content */
   height: 100vh;
+}
+
+.button-container {
+  background-color: #495057;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: center;
 }
 
 @media (max-width: 768px) {

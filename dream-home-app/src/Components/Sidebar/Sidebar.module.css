@@ -6,10 +6,10 @@
   height: 100vh;
   position: fixed;
   top: 0;
-  left: 0;
+  left: -250;
   transform: translateX(0);
   transition: left 0.3s ease;
-  z-index: 1000;
+  z-index: 1050;
 }
 
 /* Responsive: hide sidebar by default on small screens */
@@ -30,12 +30,12 @@
 }
 
 .sidebar li {
-  margin: 1rem 0;
+  margin: 5rem 0;
 }
 
 .sidebar-link {
   text-decoration: none;
-  color: #333;
+  color: black;
   font-weight: bold;
   display: flex;
   align-items: center;
@@ -55,13 +55,17 @@
 .toggle-button {
   display: none;
   position: fixed;
-  top: 1rem;
+  top: 5rem;
   left: 1rem;
   z-index: 1100;
   background: none;
   border: none;
   font-size: 2rem;
   cursor: pointer;
+}
+
+.HAM {
+  margin-top: 55px;
 }
 
 @media (max-width: 768px) {

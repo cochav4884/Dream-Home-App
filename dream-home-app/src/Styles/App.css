@@ -10,43 +10,62 @@
 
 /* If using CSS variables */
 .app-container.with-bg {
-  background-image: var(--bg-image);  /* Here we use the CSS variable */
+  background-image: var(--bg-image); /* Here we use the CSS variable */
 }
 
 .main-layout {
   display: flex;
   flex: 1;
   height: 100%;
-  overflow: hidden; /* restrict scroll unless needed in children */
+  /*overflow: hidden; /* Restrict scroll unless needed in children */
   opacity: 0.8;
+  flex-direction: column; /* Stack header and content vertically */
 }
 
+/* Fixed header styling */
 .header {
   background-color: #61dafb; /* Bootstrap's 'info' background */
   padding: 1rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;  
 }
 
 .header h1 {
-  background-color: #61dafb; /* Or slightly darker for contrast */
   margin: 0;
+  background-color: #61dafb; /* Optional: same as header for consistency */
 }
 
+h1 {
+  text-align: center;
+}
+
+/* Scrollable content area below fixed header */
 .content {
   background-color: #0e8797;
   margin-left: 250px;
   padding: 1rem;
   flex-grow: 1;
-  overflow-y: auto;  /* ✅ allows scroll inside content */
-  height: 100vh;
+  overflow-y: auto;
+  height: calc(100vh - 72px); /* Adjust if your header is taller or shorter */
+  margin-top: 72px; /* Push below the fixed header */
+}
+
+h2 {
+  text-align: center;
+  color: black;
 }
 
 .button-container {
-  background-color: #495057;
+  /* background-color: #495057; */
   padding-top: 5px;
   padding-bottom: 5px;
   text-align: center;
 }
 
+/* Responsive layout for small screens */
 @media (max-width: 768px) {
   .content {
     margin-left: 0;

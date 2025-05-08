@@ -12,7 +12,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectCategory }) => {
 
   return (
     <>
-    <button className={styles['toggle-button']} onClick={toggleSidebar}>
+    <button className={styles['toggle-button']} onClick={toggleSidebar} id='HAM'>
       ☰
     </button>
   

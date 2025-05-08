@@ -4,6 +4,7 @@ import Sidebar from "./Sidebar/Sidebar";
 import AccessoryList from "../Components/AccessoryList";
 import AccessoryForm from "../Components/AccessoryForm";
 import { Button } from "react-bootstrap";
+import { useLocation } from "react-router-dom";  // Importing react-router
 import "../Styles/App.css";
 import "../Styles/Form.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -22,6 +23,17 @@ const App: React.FC = () => {
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [formType, setFormType] = useState<Category | null>(null);
   const [activeList, setActiveList] = useState<Category>("house");
+
+  const location = useLocation(); // Use location to dynamically set active list
+
+  // Determine the active list based on the route path
+  useEffect(() => {
+    if (location.pathname === "/house-accessories") {
+      setActiveList("house");
+    } else if (location.pathname === "/land-accessories") {
+      setActiveList("land");
+    }
+  }, [location.pathname]);
 
   useEffect(() => {
     document.title = "Dream Home App";
@@ -113,7 +125,7 @@ const App: React.FC = () => {
   return (
     <div
       className="app-container with-bg"
-      style={{ '--bg-image': `url(${bg})` } as CSSPropertiesWithCustomVars} // Type assertion here
+      style={{ '--bg-image': `url(${bg})` } as CSSPropertiesWithCustomVars}
     >
       <Header />
       <div className="main-layout">

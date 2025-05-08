@@ -117,12 +117,6 @@
   ],
   "landAccessories": [
     {
-      "id": "2",
-      "name": "Pool",
-      "style": "Recreational",
-      "size": "Large"
-    },
-    {
       "id": "3",
       "name": "Greenhouse",
       "style": "Functional",
@@ -143,7 +137,7 @@
     {
       "id": "6",
       "name": "Birdbath",
-      "style": "Rustic",
+      "style": "Serene",
       "size": "Small"
     },
     {
